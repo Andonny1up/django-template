@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import User
+from .models import User, Menu, MenuItem
 
 # Register your models here.
 
@@ -73,4 +73,17 @@ class CustomUserAdmin(BaseUserAdmin):
             return redirect('admin:dashboard_user_change',obj.pk)
         return super().response_change(request, obj)
 
+# models for menu and menu items
+class MenuItemInline(admin.TabularInline):
+    model = MenuItem
+    extra = 1
+
+
+class MenuAdmin(admin.ModelAdmin):
+    inlines = [MenuItemInline]
+
+
+# Register the models
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Menu, MenuAdmin)
+admin.site.register(MenuItem)

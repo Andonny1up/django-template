@@ -1,0 +1,65 @@
+<!-- templates/components/menu.html -->
+{% load dashboard_tags %}
+<nav>
+    <ul>
+        {{path}}
+        {% for item in menu  %}
+            
+            {% if item.children.exists %}
+                <details>
+                    <summary>{{item.name}}</summary>
+                    {% for child in item.children.all  %}
+                        <p>{{child.name}}</p>
+                    {% endfor %}
+                </details>
+                
+            {% else %}
+                {% resolve_url item as url %}
+                <p></p>
+                <li>
+                    <a href="{{url}}" target="{{ item.target }}"
+                        class="flex items-center p-2 group relative hover:bg-gray-100
+                        {% if url == path %}
+                            bg-rose-500
+                        {% endif %}
+                        "
+                    >
+                        <span class="material-symbols-rounded mr-2 group-hover:text-rose-500">
+                            {% if item.icon %}
+                                {{ item.icon }}
+                            {% else %}
+                                arrow_circle_right
+                            {% endif %}
+                        </span>
+                        <span class="font-semibold">
+                            {{item.name}}
+                        </span>
+                        <div class="absolute top-0 left-0 w-1 h-full group-hover:bg-rose-500">
+
+                        </div>
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+        {% comment %} {% for item in menu.items.filter parent__isnull=True order_by='order' %}
+            <li class="text-white">
+                <a href="{% if item.is_dynamic %}{% url item.url %}{% else %}{{ item.url }}{% endif %}" target="{{ item.target }}" class="flex items-center p-2">
+                    <i class="{{ item.icon }}"></i>
+                    <span>{{ item.name }}</span>
+                </a>
+                {% if item.children.exists %}
+                    <ul class="ml-4">
+                        {% for child in item.children.all %}
+                            <li class="text-white">
+                                <a href="{% if child.is_dynamic %}{% url child.url %}{% else %}{{ child.url }}{% endif %}" target="{{ child.target }}" class="flex items-center p-2">
+                                    <i class="{{ child.icon }}"></i>
+                                    <span>{{ child.name }}</span>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %} {% endcomment %}
+    </ul>
+</nav>

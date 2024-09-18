@@ -68,3 +68,32 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, app_label):
         return self
+
+
+# Menu for the dashboard
+class Menu(models.Model):
+    """ Modelo para gestionar el menú del panel de control. """
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self) -> str:
+        return self.name
+    
+
+class MenuItem(models.Model):
+    """ Modelo para gestionar los elementos del menú del panel de control. """
+    menu = models.ForeignKey(Menu, related_name="items" ,on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', related_name="children", on_delete=models.CASCADE, blank=True, null=True)
+    name = models.CharField(max_length=100)
+    url = models.CharField(max_length=100, blank=True, null=True)
+    icon = models.CharField(max_length=100, blank=True, null=True)
+    order = models.IntegerField(default=0)
+    is_dynamic = models.BooleanField(default=False)
+    target = models.CharField(
+        max_length=10,
+        choices=[('_self', 'Misma pantalla'), ('_blank', 'Nueva pantalla')],
+        default='_self'
+    )
+
+
+    def __str__(self) -> str:
+        return self.name

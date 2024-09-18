@@ -14,3 +14,10 @@ class LoginView(AuthLoginView):
     template_name = 'dashboard/register/login.html'
     authentication_form = LoginForm
 
+
+class DashboardView(View):
+    """
+        Vista para el dashboard
+    """
+    def get(self, request):
+        return render(request, 'dashboard/index.html')
