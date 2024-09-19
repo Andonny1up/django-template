@@ -1,0 +1,20 @@
+<!-- templates/components/menu_link.html -->
+{% load dashboard_tags %}
+
+{% resolve_url item as url %}
+<a href="{{ url }}" target="{{ item.target }}"
+   class="flex items-center p-2 group relative {% if request.path == url %}bg-gray-100{% else %}hover:bg-gray-100{% endif %}">
+    <span class="material-symbols-rounded mr-2 {% if request.path == url %}text-rose-500{% else %}group-hover:text-rose-500{% endif %}">
+        {% if item.icon %}
+            {{ item.icon }}
+        {% else %}
+            arrow_circle_right
+        {% endif %}
+    </span>
+    <span class="font-semibold">
+        {{ item.name }}
+    </span>
+    {% if request.path == url %}
+        <div class="absolute top-0 left-0 w-1 h-full bg-rose-500"></div>
+    {% endif %}
+</a>

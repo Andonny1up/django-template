@@ -17,27 +17,44 @@
                 {% resolve_url item as url %}
                 <p></p>
                 <li>
-                    <a href="{{url}}" target="{{ item.target }}"
-                        class="flex items-center p-2 group relative hover:bg-gray-100
-                        {% if url == path %}
-                            bg-rose-500
-                        {% endif %}
-                        "
-                    >
-                        <span class="material-symbols-rounded mr-2 group-hover:text-rose-500">
-                            {% if item.icon %}
-                                {{ item.icon }}
-                            {% else %}
-                                arrow_circle_right
-                            {% endif %}
-                        </span>
-                        <span class="font-semibold">
-                            {{item.name}}
-                        </span>
-                        <div class="absolute top-0 left-0 w-1 h-full group-hover:bg-rose-500">
+                    {% if url == path %}
+                        <a href="{{url}}" target="{{ item.target }}"
+                        class="flex items-center p-2 group relative bg-gray-100"
+                        >
+                            <span class="material-symbols-rounded mr-2 text-rose-500">
+                                {% if item.icon %}
+                                    {{ item.icon }}
+                                {% else %}
+                                    arrow_circle_right
+                                {% endif %}
+                            </span>
+                            <span class="font-semibold">
+                                {{item.name}}
+                            </span>
+                            <div class="absolute top-0 left-0 w-1 h-full bg-rose-500">
 
-                        </div>
-                    </a>
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{{url}}" target="{{ item.target }}"
+                        class="flex items-center p-2 group relative hover:bg-gray-100
+                        
+                        "
+                        >
+                            <span class="material-symbols-rounded mr-2 group-hover:text-rose-500">
+                                {% if item.icon %}
+                                    {{ item.icon }}
+                                {% else %}
+                                    arrow_circle_right
+                                {% endif %}
+                            </span>
+                            <span class="font-semibold">
+                                {{item.name}}
+                            </span>
+                        </a>
+                    {% endif %}
+
+                    
                 </li>
             {% endif %}
         {% endfor %}
