@@ -19,20 +19,38 @@
 <body class="bg-gray-100">
     <div class="flex">
         <!-- Menú lateral -->
-        <aside class="w-64 h-screen bg-white">
-            <div class="p-4">
+        <aside id="sidebar" class="w-72 border overflow-y-scroll z-50 lg:w-14 lg:overflow-hidden lg:hover:w-72 h-screen bg-white fixed -translate-x-full transition-all duration-300 ease-in-out lg:relative lg:translate-x-0">
+            <div class="p-4 flex justify-between items-center lg:block">
                 <h1 class="text-2xl font-bold">Menú</h1>
+                <button id="btn-close-menu" class="lg:hidden">
+                    <i class="material-symbols-rounded">
+                        close
+                    </i>
+                </button>
             </div>
             <hr>
             {% load dashboard_tags %}
             {% render_menu 'main_menu' request.path %}
         </aside>
+        <!-- Overlay para pantallas pequeñas -->
+        <div id="overlay" class="fixed inset-0 bg-black opacity-40 hidden lg:hidden"></div>
         
         <!-- Contenido principal -->
         <div class="flex-1 ">
-            <header class="bg-white shadow p-4 mb-6">
-                <h1 class="text-3xl font-bold">Título de la Página</h1>
-                <h2>{{request.path}}</h2>
+            <header class="bg-white shadow p-4 mb-6 flex justify-between items-center">
+                <button id="menu-toggle" class="border p-2 flex items-center bg-gray-50">
+                    <span class="material-symbols-rounded">menu</span>
+                </button>
+                <div class="flex gap-1">
+                    <div id="help" class="bg-gray-100 w-fit flex p-2 rounded-lg">
+                        <span class="material-symbols-rounded">
+                            live_help
+                        </span>
+                    </div>
+                    <div id="user-card">
+                        <div class="w-10 h-10 bg-gray-400 rounded-full"></div>
+                    </div>
+                </div>
             </header>
             <main>
                 {% block content %}
@@ -41,5 +59,28 @@
             </main>
         </div>
     </div>
+    <script>
+        // JavaScript para manejar la visibilidad del menú en pantallas pequeñas
+        document.getElementById('menu-toggle').addEventListener('click', toggleMenu);
+        document.getElementById('overlay').addEventListener('click', toggleMenu);
+        document.getElementById('btn-close-menu').addEventListener('click', toggleMenu);
+
+        function toggleMenu() {
+            var sidebar = document.getElementById('sidebar');
+            var overlay = document.getElementById('overlay');
+            var btnIcon = document.getElementById('menu-toggle').querySelector('span');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+            if (btnIcon.textContent == 'menu') {
+                btnIcon.textContent = 'menu_open';
+            } else {
+                btnIcon.textContent = 'menu';
+            }
+            if (window.innerWidth >= 1024) {
+                sidebar.classList.toggle('lg:w-14');
+                sidebar.classList.toggle('lg:w-72');
+            }
+        }
+    </script>
 </body>
 </html>

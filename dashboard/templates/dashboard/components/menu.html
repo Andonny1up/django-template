@@ -6,55 +6,55 @@
         {% for item in menu  %}
             
             {% if item.children.exists %}
-                <details>
-                    <summary>{{item.name}}</summary>
-                    {% for child in item.children.all  %}
-                        <p>{{child.name}}</p>
-                    {% endfor %}
-                </details>
-                
-            {% else %}
-                {% resolve_url item as url %}
-                <p></p>
                 <li>
-                    {% if url == path %}
-                        <a href="{{url}}" target="{{ item.target }}"
-                        class="flex items-center p-2 group relative bg-gray-100"
+                    <details 
+                        name="main_sub_menu"
+                    >
+                        <summary
+                            class="flex items-center justify-between group p-2  relative hover:bg-gray-100 cursor-pointer"
                         >
-                            <span class="material-symbols-rounded mr-2 text-rose-500">
-                                {% if item.icon %}
-                                    {{ item.icon }}
-                                {% else %}
-                                    arrow_circle_right
-                                {% endif %}
-                            </span>
-                            <span class="font-semibold">
-                                {{item.name}}
-                            </span>
-                            <div class="absolute top-0 left-0 w-1 h-full bg-rose-500">
-
+                            <div class="flex">
+                                <span class="material-symbols-rounded ms-2 me-4 group-hover:text-rose-500">
+                                    top_panel_open
+                                </span>
+                                <span class="font-semibold">
+                                    {{item.name}}
+                                </span>
                             </div>
-                        </a>
-                    {% else %}
-                        <a href="{{url}}" target="{{ item.target }}"
-                        class="flex items-center p-2 group relative hover:bg-gray-100
-                        
-                        "
+                            <span class="expand_more material-symbols-rounded transform transition-transform duration-100 group-open:rotate-180">
+                                expand_more
+                            </span>
+                        </summary>
+                        {% for child in item.children.all  %}
+                            {% include './menu_link.html' with item=child class_name='bg-gray-50' %}
+                        {% endfor %}
+                    </details>
+                    <details 
+                        name="main_sub_menu"
+                    >
+                        <summary
+                            class="flex items-center justify-between group p-2  relative hover:bg-gray-100"
                         >
-                            <span class="material-symbols-rounded mr-2 group-hover:text-rose-500">
-                                {% if item.icon %}
-                                    {{ item.icon }}
-                                {% else %}
-                                    arrow_circle_right
-                                {% endif %}
+                            <div class="flex">
+                                <span class="material-symbols-rounded ms-2 me-4 group-hover:text-rose-500">
+                                    top_panel_open
+                                </span>
+                                <span class="font-semibold">
+                                    {{item.name}}
+                                </span>
+                            </div>
+                            <span class="expand_more material-symbols-rounded transform transition-transform duration-100 group-open:rotate-180">
+                                expand_more
                             </span>
-                            <span class="font-semibold">
-                                {{item.name}}
-                            </span>
-                        </a>
-                    {% endif %}
-
-                    
+                        </summary>
+                        {% for child in item.children.all  %}
+                            {% include './menu_link.html' with item=child class_name='bg-gray-50' %}
+                        {% endfor %}
+                    </details>
+                </li>
+            {% else %}
+                <li>
+                    {% include './menu_link.html' with item=item %}
                 </li>
             {% endif %}
         {% endfor %}
@@ -80,3 +80,15 @@
         {% endfor %} {% endcomment %}
     </ul>
 </nav>
+
+<style>
+    details[open] summary {
+        background-color: #f3f4f6;
+    }
+    details[open] summary div span:first-child {
+        color: red;
+    }
+    details[open] summary .expand_more {
+        transform: rotate(180deg);
+    }
+</style>

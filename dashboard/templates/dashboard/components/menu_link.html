@@ -3,8 +3,8 @@
 
 {% resolve_url item as url %}
 <a href="{{ url }}" target="{{ item.target }}"
-   class="flex items-center p-2 group relative {% if request.path == url %}bg-gray-100{% else %}hover:bg-gray-100{% endif %}">
-    <span class="material-symbols-rounded mr-2 {% if request.path == url %}text-rose-500{% else %}group-hover:text-rose-500{% endif %}">
+   class="flex items-center p-2 group relative {{class_name}} {% if path == url %}bg-gray-100{% else %}hover:bg-gray-100{% endif %}">
+    <span class="material-symbols-rounded {% if class_name %}mx-4{% else %}ms-2 me-4{% endif %} {% if path == url %}text-rose-500{% else %}group-hover:text-rose-500{% endif %}">
         {% if item.icon %}
             {{ item.icon }}
         {% else %}
@@ -14,7 +14,7 @@
     <span class="font-semibold">
         {{ item.name }}
     </span>
-    {% if request.path == url %}
+    {% if path == url %}
         <div class="absolute top-0 left-0 w-1 h-full bg-rose-500"></div>
     {% endif %}
 </a>
